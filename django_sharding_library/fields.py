@@ -191,6 +191,10 @@ class PostgresShardGeneratedIDAutoField(BasePostgresShardGeneratedIDField, BigAu
     """
     A field that uses a Postgres stored procedure to return an ID generated on the database.
     """
+    def db_type_suffix(self, connection):
+        # Use old behaviour with default instead new behaviour with IDENTITY
+        return None
+
     def db_type(self, connection, *args, **kwargs):
         try:
             from django.db.backends.postgresql.base import DatabaseWrapper as PostgresDatabaseWrapper
