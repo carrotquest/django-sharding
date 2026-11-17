@@ -195,6 +195,10 @@ class PostgresShardGeneratedIDAutoField(BasePostgresShardGeneratedIDField, BigAu
         # Use old behaviour with default instead new behaviour with IDENTITY
         return None
 
+    def get_placeholder(self, value, compiler, connection):
+        # Django 5.2 compatibility
+        return "%s"
+
     def db_type(self, connection, *args, **kwargs):
         try:
             from django.db.backends.postgresql.base import DatabaseWrapper as PostgresDatabaseWrapper
