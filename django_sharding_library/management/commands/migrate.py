@@ -5,6 +5,14 @@ from django_sharding_library.exceptions import InvalidMigrationException
 
 
 class Command(MigrationCommand):
+    def get_check_kwargs(self, options):
+        kwargs = super().get_check_kwargs(options)
+
+        if not options['database'] or options['database'] == 'all':
+            return {**kwargs, "databases": self.get_all_but_replica_dbs()}
+
+        return kwargs
+
     def handle(self, *args, **options):
         if not options['database'] or options['database'] == 'all':
             databases = self.get_all_but_replica_dbs()
